@@ -1,0 +1,43 @@
+# dependencies
+node_modules/
+
+# build output
+dist/
+dist-ssr/
+*.local
+
+# environment and secrets
+.env
+.env.*
+
+# logs
+logs/
+*.log
+npm-debug.log*
+
+# editor and OS
+.vscode/*
+!.vscode/extensions.json
+.idea/
+.DS_Store
+Thumbs.db
+*.swp
+
+# raw image downloads and working files (never committed)
+public/images/_raw/
+captures/
+playwright-report/
+test-results/
+docs/evidence/
+
+# local tooling and app configuration
+.claude/
+tools/
+venv/
+.venv/
+
+# generated on demand
+scripts/images/focal-suggestions.json
+
+# reel recordings (scripts/reels/record.mjs)
+release-media/

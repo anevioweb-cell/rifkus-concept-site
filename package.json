@@ -1,0 +1,68 @@
+{
+  "name": "rifkus-concept-site",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Unofficial concept website for a snack brand: React, Vite, Tailwind CSS, motion and Lenis, prerendered at build time.",
+  "keywords": [
+    "react",
+    "vite",
+    "tailwindcss",
+    "motion",
+    "lenis",
+    "react-router",
+    "prerender",
+    "frontend",
+    "landing-page",
+    "concept",
+    "portfolio"
+  ],
+  "author": {
+    "name": "Anevio",
+    "url": "https://anevio-dz.com"
+  },
+  "license": "MIT",
+  "type": "module",
+  "engines": {
+    "node": ">=22.12"
+  },
+  "scripts": {
+    "dev": "vite",
+    "prebuild": "node -e \"require('fs').rmSync('dist',{recursive:true,force:true})\"",
+    "build": "vite build && vite build --ssr src/entry-prerender.jsx --outDir dist-ssr && node scripts/prerender.mjs",
+    "preview": "vite preview",
+    "lint": "eslint . --max-warnings=0",
+    "lint:fix": "eslint . --fix",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "i18n:check": "node scripts/check-i18n.mjs",
+    "check": "node scripts/run-check.mjs",
+    "scan": "node scripts/scan-placeholders.mjs",
+    "images": "node scripts/images/build-images.mjs",
+    "focal": "node scripts/images/focal.mjs",
+    "reels": "node scripts/reels/record.mjs"
+  },
+  "dependencies": {
+    "lenis": "^1.3.27",
+    "motion": "^14.4.0",
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1",
+    "react-router": "^8.5.0"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.39.5",
+    "@tailwindcss/vite": "^4.3.3",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "@vitejs/plugin-react": "^6.1.2",
+    "eslint": "^9.39.5",
+    "eslint-plugin-jsx-a11y": "^6.10.2",
+    "eslint-plugin-react": "^7.37.5",
+    "eslint-plugin-react-hooks": "^7.1.1",
+    "eslint-plugin-react-refresh": "^0.5.7",
+    "globals": "^17.13.0",
+    "prettier": "^3.9.10",
+    "sharp": "^0.35.5",
+    "tailwindcss": "^4.3.3",
+    "vite": "^8.3.4"
+  }
+}

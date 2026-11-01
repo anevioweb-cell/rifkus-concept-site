@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <!--
+      Critical fonts (keep in sync with src/styles/fonts.css): Plus Jakarta
+      Sans latin (all text) and Baloo Bhaijaan 2 arabic (the «زفيطي» hero
+      title). Baloo latin (the small wordmark) is not preloaded: it swaps in
+      with a metric-matched fallback and preloading it slowed the mobile LCP.
+    -->
+    <link rel="preload" as="font" type="font/woff2" crossorigin href="/fonts/plus-jakarta-sans-latin.v1.woff2" />
+    <link rel="preload" as="font" type="font/woff2" crossorigin href="/fonts/baloo-bhaijaan-2-arabic.v3.woff2" />
+    <!--
+      The LCP image (the hero bag on Home, the first card on /flavors, the
+      cover bag on a flavor page) is preloaded by React itself from its
+      fetchpriority="high" <img> in the prerendered markup; no manual
+      preload here (a hand-written one went stale when the bag file changed).
+    -->
+    <meta name="theme-color" content="#160709" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <title data-prerendered>Rifkus</title>
+    <meta data-prerendered name="description" content="Rifkus chips, 100% Algerian snack. Unofficial concept website." />
+  </head>
+  <body>
+    <noscript><p>Rifkus: this unofficial concept website needs JavaScript for pages other than Home.</p></noscript>
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
+</html>
