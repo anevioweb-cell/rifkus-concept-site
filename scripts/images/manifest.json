@@ -1,0 +1,83 @@
+{
+  "$comment": "Inputs for scripts/images/build-images.mjs. Paths are relative to public/images/_raw/ (git-ignored). Sources and rights: CREDITS.md. Cutouts are produced locally by ../tools/remove-bg.py (rembg, never an online service).",
+  "flavors": [
+    {
+      "slug": "zfiti",
+      "cutout": "cutouts/zfiti-hires.png",
+      "$comment": "Owner-supplied image (2026-10-21, _raw/cutouts/zfiti.jpeg, 1368x768 on a plain light background, bag 485x649), copied to source/zfiti-hires.jpg and cut out locally with rembg isnet (493x653). Print checked against the real photo. The earlier 239x318 cutout stays in _raw as zfiti.png.",
+      "quality": 66
+    },
+    {
+      "slug": "mhadjeb",
+      "cutout": "cutouts/mhadjeb-hires.png",
+      "$comment": "Owner-supplied image (2026-11-01, _raw/cutouts/mhadjeb.jpeg, 864x1246 on white, bag 665x901), copied to source/mhadjeb-hires.jpg and cut out locally with rembg isnet (669x904). Print, logo and mascot checked against the owner's photo (source/mhadjeb.png, 416x600): letters identical; the mascot is redrawn sharper by AI, same pose and clothes.",
+      "quality": 70
+    },
+    {
+      "slug": "harissa",
+      "cutout": "cutouts/harissa.png"
+    },
+    {
+      "slug": "ketchup",
+      "cutout": "cutouts/ketchup.png"
+    },
+    {
+      "slug": "pizza",
+      "cutout": "cutouts/pizza.png",
+      "quality": 74,
+      "$comment": "Busy print: quality 74 keeps the hero slide under 200 KB on phones (checked at 100%)."
+    },
+    {
+      "slug": "chicken",
+      "cutout": "cutouts/chicken.png"
+    }
+  ],
+  "photos": [
+    {
+      "id": "zfiti-photo",
+      "$comment": "Real Zfiti bag held in a shop (retailer post, see CREDITS.md). Crop below the retailer badge, exactly 4:5, never retouched.",
+      "source": "source/zfiti-ig-1.jpg",
+      "crop": {
+        "left": 120,
+        "top": 390,
+        "width": 1280,
+        "height": 1600
+      },
+      "widths": [480, 640, 960, 1280],
+      "quality": 74,
+      "backdrop": true
+    },
+    {
+      "id": "zfiti-shelf",
+      "$comment": "Real shelf of Zfiti bags (same retailer post, slide 2). Crop below the retailer badge.",
+      "source": "source/zfiti-ig-2.jpg",
+      "crop": {
+        "left": 0,
+        "top": 400,
+        "width": 1534,
+        "height": 1534
+      },
+      "widths": [480, 800, 1200, 1534],
+      "quality": 74
+    }
+  ],
+  "og": [
+    {
+      "id": "og-home",
+      "$comment": "The first hero slide (Mhadjeb scene + its real bag), composed on an ink gradient, no text.",
+      "scene": "mhadjeb",
+      "bag": "cutouts/mhadjeb-hires.png"
+    }
+  ],
+  "scenes": {
+    "$comment": "Hero scenes: base backgrounds from _raw/backgrounds/<slug>-{desktop,mobile}.<png|jpg|jpeg|webp> (owner-provided, AI-generated allowed for this concept), slugs and focal data from src/data/heroScenes.js; ingredient elements from _raw/elements/*.png. Never upscaled. qualityBySlug: pizza (busy scene, per-slide weight budget on phones).",
+    "desktop": [960, 1376],
+    "mobile": [540, 768],
+    "quality": 66,
+    "elements": [180, 360],
+    "qualityBySlug": {
+      "pizza": 60,
+      "zfiti": 58
+    }
+  }
+}
