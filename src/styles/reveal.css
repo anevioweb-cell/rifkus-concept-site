@@ -1,0 +1,56 @@
+/*
+ * Scroll reveals (components/Reveal.jsx). Transform, opacity and (statement only)
+ * filter. The start state exists only while data-reveal="pending", which is
+ * set after hydration for elements below the viewport.
+ */
+.reveal {
+  --rv-y: 60px;
+  --rv-t: 1s;
+  --rv-ease: var(--ease-out-expo);
+  --rv-delay: 0s;
+}
+.reveal-card {
+  --rv-y: 70px;
+  --rv-t: 1.2s;
+}
+.reveal-statement {
+  --rv-y: 24px;
+  --rv-ease: var(--ease-out-soft);
+}
+.reveal-step-1 {
+  --rv-delay: 0.2s;
+}
+.reveal-step-2 {
+  --rv-delay: 0.4s;
+}
+.reveal-step-3 {
+  --rv-delay: 0.6s;
+}
+.reveal-step-4 {
+  --rv-delay: 0.8s;
+}
+.reveal-step-5 {
+  --rv-delay: 1s;
+}
+
+.reveal[data-reveal='pending'] {
+  opacity: 0;
+  transform: translate3d(0, var(--rv-y), 0);
+}
+.reveal-statement[data-reveal='pending'] {
+  filter: blur(10px);
+}
+.reveal[data-reveal='in'] {
+  transition:
+    opacity var(--rv-t) var(--rv-ease) var(--rv-delay),
+    transform var(--rv-t) var(--rv-ease) var(--rv-delay),
+    filter var(--rv-t) var(--rv-ease) var(--rv-delay);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal[data-reveal] {
+    opacity: 1;
+    transform: none;
+    filter: none;
+  }
+}

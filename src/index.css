@@ -1,0 +1,12 @@
+@import 'tailwindcss';
+@import './styles/fonts.css';
+@import './styles/theme.css';
+@import './styles/base.css';
+@import './styles/hero.css';
+@import './styles/reveal.css';
+@import './styles/home.css';
+
+/* Phone tiers (docs/DESIGN_SYSTEM.md). */
+@custom-variant xs (@media (width < 23.75rem));
+@custom-variant short (@media (orientation: portrait) and (max-height: 43.75rem));
+@custom-variant landscape-phone (@media (orientation: landscape) and (max-height: 31.25rem));

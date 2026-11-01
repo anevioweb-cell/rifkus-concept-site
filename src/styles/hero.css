@@ -1,0 +1,306 @@
+/*
+ * Home hero geometry and scene layers (docs/IMAGES.md).
+ *
+ * One set of CSS variables drives BOTH the bag stage and the scene, so the
+ * scene's focal point sits behind the bag center from the first paint,
+ * without JavaScript:
+ *   --tile-w, --stage-x, --stage-y   bag stage (measured reference layout)
+ *   --bag-cx, --bag-cy               bag center: CSS default from the stage
+ *                                    formula, refined at runtime (--bag-cx-m,
+ *                                    --bag-cy-m, written by HeroSlider from
+ *                                    the real stage box on resize)
+ *   --fx, --fy, --ar, --k            per scene (generated <style> in
+ *                                    HeroScene.jsx): focal fraction, aspect
+ *                                    ratio, scale hint; desktop or mobile set
+ *                                    by the same media query as <picture>
+ * The scene is scaled to the smallest size that keeps the focal point under
+ * the bag with no edge exposed, then overscanned 6 % for the parallax, and
+ * moved with transform only.
+ */
+@utility hero-geo {
+  --sec-h: max(100svh, 34rem);
+  /* Ingredient pieces are small cutouts: a bit smaller on portrait phones so
+     they never render far above their native pixels. */
+  --piece-k: 1;
+  @media (max-aspect-ratio: 4/5) {
+    --piece-k: 0.8;
+  }
+  /* Phones: the stage fills the space between the h1 and the
+     bottom stack (caption 7.25rem + actions + names row + safe area), so the
+     bag grows with the screen height as well as its width. Short phones
+     (≤ 700 px tall) pull the h1 and the stage up. */
+  --hero-stack: calc(14.5rem + var(--safe-bottom, 0px));
+  --stage-y: calc(var(--nav-height) + 5.5rem);
+  --tile-w: min(calc((100svh - var(--stage-y) - var(--hero-stack)) * 0.8), calc(100vw - 2rem), 26rem);
+  --stage-x: calc(50vw - var(--tile-w) / 2);
+  @media (orientation: portrait) and (max-height: 43.75rem) {
+    --stage-y: calc(var(--nav-height) + 4rem);
+  }
+  /* Bag center inside the stage: wrapper inset 1 % / 0 / 4 % of a 4:5 stage,
+     3:4 canvas (height-limited), bag spanning 4 %–98 % of the canvas:
+     y = 0.51 × 1.2 × tile-w. Keep in sync with config/heroGeometry.js. */
+  --bag-cx: var(--bag-cx-m, calc(var(--stage-x) + var(--tile-w) / 2));
+  --bag-cy: var(--bag-cy-m, calc(var(--stage-y) + var(--tile-w) * 0.612));
+
+  @media (width >= 50.625rem) {
+    --tile-w: min(calc((100svh - 16.5rem) * 0.8), calc(100vw - 32.75rem));
+    --stage-x: max(calc(66vw - var(--tile-w) / 2), 31.25rem);
+    --stage-y: 10.25rem;
+  }
+  @media (width >= 75rem) {
+    --tile-w: min(calc((100svh - 11.25rem) * 0.8), calc(100vw - 57.5rem), 50rem);
+    --stage-x: max(calc(62vw - var(--tile-w) / 2), 40rem);
+    --stage-y: 5.625rem;
+  }
+  /* Landscape phones: the screen is only 360–430 px tall, so
+     the bag goes to the end side, sized by height; text and controls stay
+     on the start side. */
+  @media (orientation: landscape) and (max-height: 31.25rem) {
+    --sec-h: 100svh;
+    --tile-w: calc((100svh - var(--nav-height) - 1.5rem) * 0.8);
+    --stage-x: calc(100vw - var(--tile-w) - max(var(--gutter), 6vw));
+    --stage-y: calc(var(--nav-height) + 0.5rem);
+  }
+}
+
+/* "New" badge: on phones at the stage's top end corner (on the crimp, off
+   the printed name of a small bag); on larger stages a little inside. */
+@utility stage-badge {
+  position: absolute;
+  inset-inline-end: 2%;
+  top: 3%;
+  font-size: 0.75rem; /* never under 12 px */
+  padding: 0.2em 0.7em;
+  /* Larger stages: inside the corner, clear of the blurred front pieces. */
+  @media (width >= 50.625rem) {
+    inset-inline-end: 6%;
+    top: 9%;
+    padding: 0.3em 0.9em;
+  }
+  rotate: 6deg;
+}
+
+/* Phones: the scrollable names row fades at its edges (a scroll hint). */
+@utility names-fade {
+  @media (width < 50.625rem) {
+    mask-image: linear-gradient(to right, transparent, black 1.5rem, black calc(100% - 1.5rem), transparent);
+  }
+}
+
+/* Phones: chip rows fade at the end only (the first chip stays crisp). */
+@utility chips-fade {
+  @media (width < 50.625rem) {
+    mask-image: linear-gradient(to right, black calc(100% - 2rem), transparent);
+  }
+}
+
+/* Portrait phones: calmer scenes (no blurred front pieces, half the motes). */
+@media (max-aspect-ratio: 4/5) {
+  .piece-slot[data-depth='front'],
+  .mote:nth-child(2n) {
+    display: none;
+  }
+}
+
+@utility hero-stage {
+  position: absolute;
+  left: var(--stage-x);
+  top: var(--stage-y);
+  width: var(--tile-w);
+  aspect-ratio: 4 / 5;
+  perspective: 1100px;
+}
+
+/* Base background: positioned by its focal point (see the file header). */
+@utility scene-base {
+  --sw: calc(
+    max(
+        var(--bag-cx) / var(--fx),
+        (100vw - var(--bag-cx)) / (1 - var(--fx)),
+        var(--bag-cy) / var(--fy) * var(--ar),
+        (var(--sec-h) - var(--bag-cy)) / (1 - var(--fy)) * var(--ar)
+      ) *
+      var(--k) * 1.06
+  );
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: var(--sw);
+  height: calc(var(--sw) / var(--ar));
+  transform: translate(calc(var(--bag-cx) - var(--fx) * var(--sw)), calc(var(--bag-cy) - var(--fy) * var(--sw) / var(--ar)));
+}
+
+/* Dark "pocket" around the bag (tinted with the flavor), so the bag never
+   melts into a busy or bright area. --pocket: 0–1 strength. */
+@utility scene-pocket {
+  --pocket-w: 0.95;
+  --pocket-k: 1;
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    calc(var(--tile-w) * var(--pocket-w)) calc(var(--tile-w) * var(--pocket-w) * 1.16) at var(--bag-cx) var(--bag-cy),
+    color-mix(in srgb, color-mix(in srgb, var(--color-ink) 78%, var(--tint)) calc(min(1, var(--pocket) * var(--pocket-k)) * 100%), transparent) 35%,
+    color-mix(in srgb, color-mix(in srgb, var(--color-ink) 78%, var(--tint)) calc(min(1, var(--pocket) * var(--pocket-k)) * 55%), transparent) 68%,
+    transparent 100%
+  );
+
+  /* Portrait: the bag fills more of the screen and the scene is busier right
+     around it, so the pocket is wider and stronger. */
+  @media (max-aspect-ratio: 4/5) {
+    --pocket-w: 1.15;
+    --pocket-k: 1.3;
+  }
+}
+
+/* Rim / back glow in the flavor color directly behind the bag. */
+@utility scene-glow {
+  position: absolute;
+  inset: 0;
+  mix-blend-mode: screen;
+  background: radial-gradient(
+    calc(var(--tile-w) * 0.62) calc(var(--tile-w) * 0.78) at var(--bag-cx) var(--bag-cy),
+    color-mix(in srgb, var(--tint) calc(var(--glow) * 100%), transparent) 55%,
+    transparent 100%
+  );
+}
+
+/* Optional per-scene shade behind the title block (bottom start), for a
+   bright base (`shade` in heroScenes.js, 0–1; Mhadjeb's griddles at 1000 px). */
+@utility scene-shade {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(48rem 26rem at 0% 70%, color-mix(in srgb, var(--color-ink) calc(var(--shade) * 100%), transparent), transparent 72%);
+}
+
+/* Film grain: an SVG noise tile (rendered once by the browser), very light. */
+@utility scene-grain {
+  position: absolute;
+  inset: 0;
+  opacity: 0.07;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* Text protection (contrast): dark gradients behind the h1 (top end), the
+   title block (bottom start) and the names row (bottom), on top of the
+   reference scrim. */
+@utility scene-legibility {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(46rem 18rem at 100% 0%, color-mix(in srgb, var(--color-ink) 82%, transparent), transparent 70%),
+    radial-gradient(56rem 26rem at 0% 100%, color-mix(in srgb, var(--color-ink) 80%, transparent), transparent 72%),
+    linear-gradient(to top, color-mix(in srgb, var(--color-ink) 70%, transparent), transparent 18%);
+}
+
+/* Floating motes (sparks, dust): rise and fade, transform + opacity only. */
+@keyframes mote-rise {
+  0% {
+    transform: translate3d(0, 0, 0) scale(1);
+    opacity: 0;
+  }
+  15% {
+    opacity: var(--mote-o, 0.9);
+  }
+  100% {
+    transform: translate3d(var(--mote-dx, 20px), -42vh, 0) scale(0.4);
+    opacity: 0;
+  }
+}
+@keyframes piece-drift {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) rotate(var(--rot));
+  }
+  50% {
+    transform: translate3d(var(--drift-x, 6px), var(--drift-y, -10px), 0) rotate(calc(var(--rot) + var(--drift-r, 4deg)));
+  }
+}
+
+@utility mote {
+  position: absolute;
+  border-radius: 999px;
+  animation: mote-rise var(--mote-t, 6s) linear var(--mote-d, 0s) infinite;
+  opacity: 0;
+}
+
+@utility piece-slot {
+  position: absolute;
+}
+
+@utility piece {
+  display: block;
+  width: 100%;
+  height: auto;
+  transform: rotate(var(--rot));
+  animation: piece-drift var(--drift-t, 9s) ease-in-out var(--drift-d, 0s) infinite;
+}
+
+/* Reduced motion: static final composition (motes visible, nothing moves). */
+@media (prefers-reduced-motion: reduce) {
+  .mote {
+    animation: none;
+    opacity: calc(var(--mote-o, 0.9) * 0.6);
+  }
+  .piece {
+    animation: none;
+  }
+}
+
+/*
+ * Flavor page cover: the same centering system as the hero
+ * (shared variables, scene-base, pocket, glow, pieces), with a stage that
+ * keeps the bag clear of the title block at the bottom start (reference
+ * detail cover: title 132 / 88 / 56 px, its block ends 100 px above the
+ * bottom). Phone: centered under the bar, ending above the title even on a
+ * 667 px tall screen. Tablet / desktop: the hero's horizontal position, but
+ * starting under the bar.
+ */
+@utility cover-geo {
+  --sec-h: max(100svh, 34rem);
+  --piece-k: 1;
+  @media (max-aspect-ratio: 4/5) {
+    --piece-k: 0.8;
+  }
+  /* Phones: the title block sits 2rem from the bottom (not the
+     reference 100 px), so 12.5rem is reserved under the stage. */
+  --tile-w: min(calc((100svh - var(--nav-height) - 1.5rem - 12.5rem - var(--safe-bottom, 0px)) * 0.8), calc(100vw - 4rem), 26rem);
+  --stage-x: calc(50vw - var(--tile-w) / 2);
+  --stage-y: calc(var(--nav-height) + 1.5rem);
+  --bag-cx: var(--bag-cx-m, calc(var(--stage-x) + var(--tile-w) / 2));
+  --bag-cy: var(--bag-cy-m, calc(var(--stage-y) + var(--tile-w) * 0.612));
+
+  @media (width >= 50.625rem) {
+    --tile-w: min(calc((100svh - 21rem) * 0.8), calc(100vw - 32.75rem));
+    --stage-x: max(calc(66vw - var(--tile-w) / 2), 31.25rem);
+  }
+  @media (width >= 75rem) {
+    --tile-w: min(calc((100svh - 11.25rem) * 0.8), calc(100vw - 57.5rem), 50rem);
+    --stage-x: max(calc(62vw - var(--tile-w) / 2), 40rem);
+    --stage-y: 5.625rem;
+  }
+  /* Landscape phones: the bag on the end side, sized by height (as the hero). */
+  @media (orientation: landscape) and (max-height: 31.25rem) {
+    --sec-h: 100svh;
+    --tile-w: calc((100svh - var(--nav-height) - 1.5rem) * 0.8);
+    --stage-x: calc(100vw - var(--tile-w) - max(var(--gutter), 6vw));
+    --stage-y: calc(var(--nav-height) + 0.5rem);
+  }
+}
+
+/* Reference detail cover: top scrim black 55 % → 0 over the first 25 %, and a
+   380 px bottom shade 0 → 20 % (36 %) → 70 %; plus a soft dark corner behind
+   the title block for contrast on bright scenes. */
+@utility cover-scrim {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(to bottom, color-mix(in srgb, var(--color-black) 55%, transparent), transparent 25%),
+    linear-gradient(
+      to bottom,
+      transparent calc(100% - 23.75rem),
+      color-mix(in srgb, var(--color-black) 20%, transparent) calc(100% - 15.125rem),
+      color-mix(in srgb, var(--color-black) 70%, transparent) 100%
+    ),
+    radial-gradient(52rem 24rem at 0% 100%, color-mix(in srgb, var(--color-ink) 72%, transparent), transparent 72%);
+}

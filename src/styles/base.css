@@ -1,0 +1,198 @@
+/*
+ * Global base styles. Keep this file small: components style themselves with
+ * Tailwind utilities that reference tokens from theme.css.
+ */
+
+/* Motion durations (CSS side of src/config/motion.js). Use as
+   duration-(--duration-link) in class names. */
+:root {
+  --duration-fast: 200ms;
+  --duration-hover: 300ms; /* reference: arrows, slide names */
+  --duration-base: 450ms;
+  --duration-link: 500ms; /* reference: link color */
+  --duration-card: 1100ms; /* reference: card image scale on hover */
+  --duration-card-out: 130ms; /* reference: the card image snaps back when the pointer leaves */
+  --duration-filter: 400ms; /* reference: filter row roll-up and count reveal (ease-link) */
+  --duration-marquee: 40s; /* one loop of the yellow flavor ticker */
+
+  /* Layout steps measured on the reference (phone < 810 px). 16 px gutter under 390 px, 20 px from 390 to 809 (more air on common
+     phones), the reference 24 px from 810. The gutter never goes under the
+     landscape safe-area insets (notch). */
+  --gutter: max(1rem, env(safe-area-inset-left), env(safe-area-inset-right));
+  --nav-height: 4.125rem; /* 66 */
+  --fs-micro: 0.75rem; /* 12: smallest label on phones */
+  --section-y: 4rem; /* 64: phone section rhythm */
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+@media (min-width: 24.375rem) {
+  :root {
+    --gutter: max(1.25rem, env(safe-area-inset-left), env(safe-area-inset-right)); /* 20 */
+  }
+}
+
+@media (min-width: 50.625rem) {
+  :root {
+    --gutter: 1.5rem; /* 24 */
+    --nav-height: 3.75rem; /* 60 */
+    --fs-micro: 0.6875rem; /* 11 */
+    --section-y: 7.5rem; /* 120 */
+  }
+}
+
+@media (min-width: 75rem) {
+  :root {
+    --fs-micro: 0.625rem; /* 10, measured */
+  }
+}
+
+/* Landscape phones use the tablet layout from 810 px wide, but stay phones:
+   labels keep 12 px. */
+@media (orientation: landscape) and (max-height: 31.25rem) {
+  :root {
+    --fs-micro: 0.75rem;
+  }
+}
+
+@layer base {
+  html {
+    color-scheme: dark;
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+    scroll-padding-top: var(--nav-height);
+    /* Keyboard focus and anchors never land under the bar or at the very
+       bottom edge (phones: browser bars). */
+    scroll-padding-bottom: 5rem;
+    /* No grey flash on tap (Android / iOS); the focus ring stays. */
+    -webkit-tap-highlight-color: transparent;
+    /* The page is dark (reference), so the ring is Rifkus yellow (13.46:1 on ink). */
+    --focus-ring: var(--color-brand);
+  }
+
+  body {
+    @apply bg-ink font-sans text-body text-white antialiased;
+    overflow-x: clip;
+  }
+
+  /* No CSS smooth scrolling: route changes jump to the top at once, and the
+     mouse wheel is smoothed by Lenis (components/SmoothScroll.jsx). */
+
+  /* Lenis, minimal rules (from lenis/dist/lenis.css, without autoToggle). */
+  html.lenis,
+  html.lenis body {
+    height: auto;
+  }
+  .lenis.lenis-stopped {
+    overflow: clip;
+  }
+  .lenis [data-lenis-prevent] {
+    overscroll-behavior: contain;
+  }
+  .lenis.lenis-smooth iframe {
+    pointer-events: none;
+  }
+
+  /* Scroll lock used by the mobile menu (class toggled on <html>). */
+  html.scroll-locked {
+    overflow: hidden;
+  }
+
+  /* Balanced headings and no orphan words; long Latin words never overflow. */
+  h1,
+  h2,
+  h3 {
+    text-wrap: balance;
+  }
+  p,
+  li,
+  dd {
+    text-wrap: pretty;
+    overflow-wrap: break-word;
+  }
+
+  ::selection {
+    @apply bg-brand text-ink;
+  }
+
+  /* Visible, consistent keyboard focus everywhere (3px, 3:1+ on all surfaces). */
+  :focus-visible {
+    outline: 3px solid var(--focus-ring);
+    outline-offset: 3px;
+  }
+
+  /* Light surfaces (cream, yellow, white): navy ring (8.10:1 on bg, 5.75:1 on brand). */
+  [data-surface='light'] {
+    --focus-ring: var(--color-focus);
+  }
+
+  /* Programmatic focus targets (e.g. <main tabindex=-1>) need no ring. */
+  [tabindex='-1']:focus:not(:focus-visible) {
+    outline: none;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-delay: 0ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}
+
+/*
+ * Arabic brand words inside English text (<Ar>): Baloo Bhaijaan 2, never
+ * letter-spaced or case-transformed (letters must join). Baloo's tall
+ * ascent/descent would push the line box open, so the inline box gets no
+ * line height of its own; the glyphs still paint (overflow is visible).
+ * --ar-scale matches the Arabic letter body to the Latin cap height
+ * (measured, see DESIGN_SYSTEM.md); a parent may override it.
+ */
+@utility ar {
+  font-family: var(--font-arabic);
+  font-weight: 700;
+  /* Never under 12 px: Arabic joins need more room than Latin at small sizes. */
+  font-size: max(calc(var(--ar-scale, 0.9) * 1em), 0.75rem);
+  letter-spacing: 0;
+  text-transform: none;
+  line-height: 0;
+  font-feature-settings: normal;
+}
+
+@utility skip-link {
+  position: fixed;
+  inset-inline-start: 1rem;
+  top: 1rem;
+  z-index: 100;
+  translate: 0 -200%;
+  @apply rounded-ui bg-white px-5 py-3 text-ui font-semibold text-ink uppercase;
+  --focus-ring: var(--color-focus);
+  &:focus-visible {
+    translate: 0 0;
+  }
+}
+
+/* Reference rule: 1px dotted #8C8C8C (1 on, 1 off). Decorative only. */
+@utility rule-dotted {
+  border-block-start: 1px dotted var(--color-smoke);
+}
+
+/* The same rule on brand-yellow bands, in logo navy. */
+@utility rule-dotted-ink {
+  border-block-start: 1px dotted var(--color-brand-ink);
+}
+
+/* Hero scrim measured on the reference: black 38.4 % → 0 at 26 %, clear to
+   42 %, then → 55 % at the bottom (keeps white text readable on any slide). */
+@utility hero-scrim {
+  background-image: linear-gradient(
+    to bottom,
+    color-mix(in srgb, var(--color-black) 38.4%, transparent) 0%,
+    transparent 26%,
+    transparent 42%,
+    color-mix(in srgb, var(--color-black) 55%, transparent) 100%
+  );
+}

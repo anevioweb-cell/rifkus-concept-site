@@ -1,0 +1,37 @@
+/*
+ * Home sections below the hero: flavor card media.
+ */
+
+/* Dark pocket behind the bag on a flavor card (same idea as the hero). */
+@utility card-pocket {
+  background: radial-gradient(
+    58% 46% at 50% 54%,
+    color-mix(in srgb, var(--color-ink) 62%, transparent) 30%,
+    color-mix(in srgb, var(--color-ink) 22%, transparent) 70%,
+    transparent 100%
+  );
+}
+
+/* Bottom fade so the card image ends calmly above the title. */
+@utility card-fade {
+  background: linear-gradient(to top, color-mix(in srgb, var(--color-ink) 55%, transparent), transparent 35%);
+}
+
+/* Yellow flavor ticker (owner request; the reference has no
+   marquee). Two identical copies slide by half their width, transform only.
+   Paused on hover and by its pause button; static under reduced motion. */
+@keyframes marquee {
+  to {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+@utility marquee-track {
+  animation: marquee var(--duration-marquee) linear infinite;
+  &:hover,
+  &[data-paused='true'] {
+    animation-play-state: paused;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    animation: none;
+  }
+}
