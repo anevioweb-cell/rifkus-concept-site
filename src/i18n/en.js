@@ -1,0 +1,452 @@
+/**
+ * All user-facing copy (English). Arabic appears only as brand words
+ * (docs/DESIGN_SYSTEM.md (Arabic words)): in visible UI through the <Ar> component, and in
+ * plain-text metadata below (titles/descriptions cannot hold markup).
+ * `npm run i18n:check` fails on any other Arabic text in src/.
+ */
+const en = {
+  site: {
+    conceptShort: 'Unofficial concept site, not affiliated with Rifkus',
+    conceptBadge: 'Unofficial concept',
+    ogImageAlt: 'The Rifkus Mahajoube bag in front of folded flatbreads on copper griddles (unofficial concept website)',
+    strip: '100% Algerian snack',
+  },
+  a11y: {
+    skipToContent: 'Skip to content',
+    home: 'Rifkus home',
+    mainNav: 'Main',
+    openMenu: 'Open menu',
+    closeMenu: 'Close menu',
+    externalLink: '(opens in a new tab)',
+  },
+  nav: {
+    home: 'Home',
+    flavors: 'Flavors',
+    story: 'Our story',
+    distributors: 'Distributors',
+    privacy: 'Privacy policy',
+    terms: 'Terms',
+    legal: 'Legal notice',
+    credits: 'Credits',
+  },
+  clock: {
+    city: 'Algiers',
+    label: 'Local time in Algiers',
+  },
+  heat: {
+    value: 'Heat {value}/5',
+    estimate: 'estimated, unofficial',
+  },
+  /*
+   * Per flavor. `tagline`: hero + cards. The flavor page copy
+   * (`detailTagline`, `statement`, `description`) is MARKETING COPY:
+   * sensory or playful, no factual, health, origin or ingredient claim.
+   * Facts inside it come from the sources in src/data (printed on the bag, founder
+   * announcement) and heat is always our unofficial estimate.
+   */
+  flavors: {
+    /* Mhadjeb: tagline, detailTagline and statement are MARKETING
+       COPY (sensory, playful). The description only repeats what the bag
+       prints. No heat: the bag marks none. */
+    mhadjeb: {
+      tagline: 'Griddle gold, in a crunch.',
+      detailTagline: 'Warm, golden, gone fast.',
+      statement: 'Warm, golden and made for sharing: the griddle mood, in a bag that crunches back.',
+      description:
+        '{mhadjeb} is the newest bag featured here. Its front reads “the taste of Algerian mhadjeb” in Arabic, and MAHAJOUBE in Latin letters. The bag marks no heat level, so we give it no heat score.',
+      sceneAlt: 'Mood image: folded flatbreads on copper griddles, with flying tomatoes, onion, peppers and parsley',
+      meta: 'Mahajoube (محاجب), the newest Rifkus bag featured here.',
+    },
+    zfiti: {
+      tagline: 'Our hottest bag yet.',
+      detailTagline: 'Fire first, then more fire.',
+      statement: 'A bag that turns the heat up with every bite, and dares you to keep going.',
+      description:
+        '{zfiti} is the hottest bag featured here: loud, red and made for people who like a snack that talks back. Founder Rifka announced it on TikTok as a very hot flavor. On our scale it scores 5/5, an unofficial estimate.',
+      sceneAlt: 'Mood image: a burst of fire with ridged chips, dried chilies and herbs',
+      meta: 'Zfiti (زفيطي), the hottest Rifkus bag featured here. Heat 5/5 on our unofficial scale.',
+    },
+    harissa: {
+      tagline: 'Spicy. It says so on the bag.',
+      detailTagline: 'Spicy, and proud of it.',
+      statement: 'Bold, red and loud: the bag that warms you up before the next round.',
+      description: 'The Harissa bag says SPICY right on the front, and it means it. On our scale it scores 4/5, an unofficial estimate. Keep a drink close.',
+      sceneAlt: 'Mood image: a swirl of red paste with dried chilies, garlic and spice dust',
+      meta: 'Rifkus Harissa: the bag that says SPICY on the front. Heat 4/5 on our unofficial scale.',
+    },
+    pizza: {
+      tagline: 'Pizza flavor, crunch first.',
+      detailTagline: 'Pizza night, in a bag.',
+      statement: 'All the fun of pizza night, in a crunchy ring you can take anywhere.',
+      description: 'Pizza flavor in the blue bag, made for sharing (or not). Mild on our scale: 1/5, an unofficial estimate.',
+      sceneAlt: 'Mood image: a wreath of melted cheese, tomato and basil in front of a wood oven',
+      meta: 'Rifkus Pizza, the blue bag with crunchy rings. Heat 1/5 on our unofficial scale.',
+    },
+    ketchup: {
+      tagline: 'The classic, in red.',
+      detailTagline: 'Tangy, red and easy to love.',
+      statement: 'The classic red bag: easygoing, familiar, and gone before you know it.',
+      description:
+        'Ketchup flavor potato chips, with “Potato Chips” printed on the bag. Mild on our scale: 1/5, an unofficial estimate. A safe pick for every table.',
+      sceneAlt: 'Mood image: a splash of tomato sauce with flying tomatoes',
+      meta: 'Rifkus Ketchup potato chips, the classic red bag. Heat 1/5 on our unofficial scale.',
+    },
+    chicken: {
+      tagline: 'Chicken flavor potato chips.',
+      detailTagline: 'Golden, savory, crunch first.',
+      statement: 'Warm, savory and comforting: the bag you reach for on a long afternoon.',
+      description: 'Chicken flavor potato chips in the black bag, with “Potato Chips” printed on it. Mild on our scale: 1/5, an unofficial estimate.',
+      sceneAlt: 'Mood image: a golden seasoning swirl with herbs and chili peppers',
+      meta: 'Rifkus Chicken potato chips, the black bag. Heat 1/5 on our unofficial scale.',
+    },
+  },
+  /* Flavor page: labels; per-flavor copy is under flavors.<slug>. */
+  flavorPage: {
+    metaLabel: 'Flavor facts',
+    flavor: 'Flavor',
+    line: 'Line',
+    heat: 'Heat',
+    heatValue: '{value}/5 · estimated, unofficial',
+    pack: 'Pack',
+    packNote: 'Reported by retailers',
+    announced: 'Announced by',
+    announcedValue: 'Founder Rifka, on TikTok',
+    galleryLabel: 'Gallery',
+    relatedLabel: 'More flavors',
+    previous: 'Previous',
+    next: 'Next',
+    seeAll: 'See all flavors',
+    bagOnInk: 'The Rifkus {name} bag',
+    printedName: 'Latin name on the bag',
+  },
+  hero: {
+    titleLine1: 'We are Rifkus.',
+    regionLabel: 'Rifkus flavors',
+    slideLabel: '{index} of {total}',
+    previous: 'Previous flavor: {name}',
+    next: 'Next flavor: {name}',
+    show: 'Show {name}',
+    pause: 'Pause slideshow',
+    play: 'Play slideshow',
+    photoAlt: 'The Zfiti bag held up in a shop: black and red flames, yellow Arabic lettering, a bowl of salsa with corn cones, HOT! EXTRA',
+    bagAlt: 'Rifkus {name} bag',
+    ctaFlavor: 'See this flavor',
+    ctaAll: 'All flavors',
+    new: 'New',
+  },
+  /*
+   * Home below the hero. Facts: the sources in src/data (100% Algerian
+   * snack = Instagram bio; launch November 2024 and Zfiti announcement =
+   * founder TikTok; pack sizes = retailers, flagged "reported"). `{zfiti}`
+   * is rendered as the Arabic brand word by the components (withZfiti).
+   */
+  home: {
+    intro: {
+      s1: 'Rifkus is a',
+      h1: '100% Algerian snack',
+      s2: 'brand, launched in',
+      h2: 'November 2024',
+      s3: 'by content creator Rifka. Six flavors featured here, from the new {mhadjeb} to {zfiti}, our hottest bag yet.',
+      body: 'Unofficial concept site. Facts come from the brand’s public accounts; anything we could not confirm is left out.',
+    },
+    flavors: {
+      label: 'The flavors',
+      heatTag: 'Heat {value}/5 · estimated, unofficial',
+      newTag: 'New',
+    },
+    why: {
+      label: 'Why Rifkus',
+      r1Title: '100% Algerian snack',
+      r1Meta: 'From the brand’s Instagram bio',
+      r1Body: 'That is how the brand describes itself on its official Instagram account, @rifkus.chips.',
+      r2Title: 'A flavor for every mood',
+      r2Meta: 'Six flavors featured here',
+      r2Body: 'Golden, savory, tangy or seriously spicy: {mhadjeb}, Chicken, Ketchup, Pizza, Harissa and {zfiti}.',
+      r3Title: 'A heat scale you can read',
+      r3Meta: 'Our estimate, unofficial',
+      r3Body:
+        'Flavors get a heat score from 0 to 5 on this site. It is our own estimate, not an official rating from the brand. {mhadjeb} has none: its bag marks no heat.',
+      r4Title: '{zfiti}, the hot one',
+      r4Meta: 'Announced by founder Rifka',
+      r4Body: 'Rifka announced {zfiti} on TikTok as a very hot flavor and a first in Algeria. On our scale it scores 5/5 (estimated, unofficial).',
+    },
+    lines: {
+      label: 'What we make',
+      lead: 'Two lines on this site: the classic Potato Chips bag, and Mini Rifkus, a new project announced by Rifka.',
+      line: 'Line',
+      pack: 'Pack',
+      carton: 'Carton',
+      flavors: 'Flavors',
+      status: 'Status',
+      sizes: 'Sizes',
+      potato: 'Potato Chips',
+      mini: 'Mini Rifkus',
+      packValue: '55 g bag',
+      cartonValue: '20 × 55 g',
+      reportedRetail: 'Reported by retailers',
+      reportedImport: 'Reported by importers',
+      potatoFlavors: 'Ketchup, Chicken',
+      potatoFlavorsNote: '“Potato Chips” is printed on these bags',
+      miniStatus: 'Announced by Rifka as a new project',
+      miniSizes: '[PLACEHOLDER: sizes to be announced]',
+      bagsAlt: 'Two Rifkus Potato Chips bags: Ketchup and Chicken',
+    },
+    find: {
+      label: 'Where to find us',
+      lead: 'A list of points of sale, wilaya by wilaya, is coming to this site.',
+      rowName: '[PLACEHOLDER: store name]',
+      rowMeta: '[PLACEHOLDER: wilaya] · coming soon',
+      cta: 'Points of sale',
+    },
+    faq: {
+      label: 'Questions',
+    },
+    cta: {
+      title: 'Want Rifkus on your shelf?',
+      body: 'Shops, wholesalers and regional distributors: send a request and the brand team can follow up.',
+      button: 'Become a distributor',
+      note: 'Unofficial concept: the request form is a demo and sends nothing.',
+      imageAlt: 'A shop shelf stocked with Rifkus Zfiti bags',
+    },
+  },
+  /*
+   * /our-story. Facts: the sources in src/data, always attributed. `attitude` is MARKETING COPY (playful, no claim).
+   */
+  story: {
+    s1: 'Rifkus is a',
+    h1: '100% Algerian snack',
+    s2: 'brand. Rifka launched it in',
+    h2: 'November 2024',
+    s3: ', after a year of work, as he said in his launch post.',
+    body: 'Unofficial concept site. Every fact on this page comes from the brand’s official Instagram bio or from Rifka’s own posts, and says which.',
+    photoAlt: 'The Zfiti bag held up in a shop: black and red flames, yellow Arabic lettering, a bowl of salsa with corn cones',
+    factsLabel: 'The story so far',
+    factsLead: 'Four things we can say for sure, each with where it comes from.',
+    whoLabel: 'Who we are',
+    whoValue: '100% Algerian snack',
+    whoSource: 'Official Instagram bio, @rifkus.chips',
+    launchLabel: 'Launch',
+    launchValue: 'November 2024, “after a year of work”',
+    launchSource: 'Rifka’s launch post on TikTok',
+    sloganLabel: 'Slogan',
+    sloganGloss: 'Roughly: with Rifkus, hanging out gets sweeter',
+    sloganSource: 'Official Instagram bio',
+    hotLabel: 'The hot one',
+    hotValue: '{zfiti}, “a first in Algeria”, in Rifka’s words',
+    hotSource: 'Rifka’s TikTok',
+    flavorsLabel: 'The flavors',
+    flavorsCta: 'See all flavors',
+    attitude: 'Made for long talks, loud tables and friends who dare you to try the hot one.',
+  },
+  /*
+   * /distributors. No terms, volumes or prices are invented: rows
+   * say what a request would need; the form is a demo and sends nothing.
+   */
+  distributors: {
+    title: 'Distribute Rifkus',
+    lead: 'Shops, wholesalers and regional distributors: tell us who you are and where you are. On this concept site every request is a demo and nothing is sent.',
+    waysLabel: 'Ways to work with Rifkus',
+    apply: 'Apply',
+    wholesaleTitle: 'Wholesale partner',
+    wholesaleMeta: 'Buy by the carton, supply your own clients',
+    wholesaleBody:
+      'Tell us your business name, your wilaya and the volume you expect each month. Terms, prices and minimums would come from the brand team; this site does not set any.',
+    retailTitle: 'Retail shop',
+    retailMeta: 'Supermarkets, groceries, kiosks',
+    retailBody: 'Tell us where your shop is and what you sell today. The brand team, or a distributor near you, would be the one to follow up.',
+    regionalTitle: 'Regional distributor',
+    regionalMeta: 'Cover a wilaya or a region',
+    regionalBody: 'Tell us which wilayas you already cover and how you deliver. Whether a region is open is the brand team’s decision.',
+    formTitle: 'Ask for Rifkus.',
+    formLead: 'Fill in what you can. Required fields are marked.',
+    name: 'Your name',
+    business: 'Business name',
+    phone: 'Phone',
+    phoneHint: 'Algerian mobile, e.g. 05 12 34 56 78',
+    email: 'Email',
+    wilaya: 'Wilaya',
+    type: 'Business type',
+    typeWholesale: 'Wholesale partner',
+    typeRetail: 'Retail shop',
+    typeRegional: 'Regional distributor',
+    typeOther: 'Other',
+    volume: 'Estimated monthly volume',
+    volumeHint: 'In cartons. No prices are asked or given here.',
+    volume1: 'Fewer than 10 cartons',
+    volume2: '10 to 50 cartons',
+    volume3: '50 to 200 cartons',
+    volume4: 'More than 200 cartons',
+    volume5: 'Not sure yet',
+    message: 'Message',
+    consent: 'I understand this is an unofficial concept site and that nothing I type is sent or stored.',
+    submit: 'Send request',
+    findLabel: 'Where to find Rifkus',
+    findFilter: 'Wilaya',
+    findAll: 'All 69 wilayas',
+    findEmptyTitle: 'We are mapping where to find Rifkus.',
+    findEmptyBody: 'Know a shop that sells it? Tell us.',
+    findEmptyCta: 'Tell us about a shop',
+    findNone: 'No shop listed in this wilaya yet.',
+    findCount: '{count} listed',
+    faqLabel: 'Questions',
+    nextLabel: 'What happens next',
+    next1: 'You fill in the form. On this concept site nothing leaves your browser.',
+    next2: 'On a real Rifkus site, the request would reach the brand team.',
+    next3: 'The brand team decides any terms, prices and who follows up. This site promises none.',
+    followLabel: 'Follow Rifkus meanwhile',
+    imageAlt: 'The Zfiti bag held up in a shop',
+  },
+  /* /credits. Sources: CREDITS.md, public/fonts/licenses. */
+  credits: {
+    title: 'Credits',
+    notice: 'This is an unofficial design concept. It is not made, affiliated with or endorsed by Rifkus or by Rifka.',
+    ownersLabel: 'Brand',
+    owners:
+      'The Rifkus name, logo, mascot and packaging belong to their owners. Product images show the brand’s packaging and are used here for this concept only.',
+    fontsLabel: 'Fonts',
+    fontJakarta: 'Plus Jakarta Sans, by Tokotype. SIL Open Font License 1.1.',
+    fontBaloo: 'Baloo Bhaijaan 2, by Ek Type. SIL Open Font License 1.1.',
+    aiLabel: 'Backgrounds',
+    ai: 'The flavor scenes behind the bags are AI-generated imagery, supplied by the site’s owner for this concept. The small ingredient pieces are cut from those same images.',
+    photosLabel: 'Photos',
+    photoRetail: 'Harissa and Pizza packshots: epicerie-saintbrieuc.fr. Ketchup and Chicken packshots: midiminuit-epinal.com. Backgrounds removed locally.',
+    photoZfiti: 'Zfiti bag: an image of the real bag supplied by the site’s owner, cut out locally.',
+    photoShop: 'Zfiti in a shop and on a shelf: photos posted by the retailer @legrandtopshop on Instagram.',
+    codeLabel: 'Built with',
+    code: 'React, React Router, Vite, Tailwind CSS, Motion and Lenis, all under open-source licenses. All code and copy on this site were written for this concept.',
+    contactLabel: 'Contact',
+    contact: 'The brand’s confirmed channels:',
+    privacyLabel: 'Privacy and demo forms',
+    privacy1: 'This site sets no cookies, uses no analytics and loads nothing from other websites: every file comes from this site itself.',
+    privacy2: 'The forms are demos. What you type stays in your browser tab, is never sent or stored, and is gone when you leave the page.',
+    privacy3:
+      'The only thing the site keeps is your scroll position for the back and forward buttons, in your browser’s session storage, which is cleared when you close the tab.',
+    privacy4: 'Links to Instagram and TikTok open those sites, which have their own privacy rules.',
+  },
+  /* /flavors. Hot / Mild use our heat estimate (unofficial). */
+  flavorsPage: {
+    introLabel: 'About the flavors',
+    label: 'All flavors',
+    lead: 'Six flavors featured here, from the new {mhadjeb} to {zfiti}.',
+    body: 'Heat scores are our own estimate, not an official rating from the brand. Pick a flavor to see its scene, its bag and how hot it runs.',
+    filterLabel: 'Filter flavors',
+    reset: 'Reset',
+    all: 'All',
+    total: 'Total flavors',
+    count: '{count} flavors',
+    countOne: '{count} flavor',
+    shown: '{count} shown',
+    heatNote: 'Hot and Mild follow our heat estimate (unofficial); flavors without one are left out',
+    filters: {
+      hot: 'Hot',
+      mild: 'Mild',
+      potato: 'Potato Chips',
+      new: 'New',
+    },
+  },
+  marquee: {
+    pause: 'Pause the flavor ticker',
+    play: 'Play the flavor ticker',
+  },
+  footer: {
+    sloganLabel: 'Rifkus slogan, roughly: with Rifkus, hanging out gets sweeter',
+    newsTitle: 'Get Rifkus news',
+    newsBody: 'New flavors, shops and challenges. Demo form: nothing is sent.',
+    newsName: 'Your name',
+    newsEmail: 'Your email',
+    newsSubmit: 'Sign up',
+    navigation: 'Navigation',
+    legal: 'Legal',
+    socials: 'Socials',
+    contact: 'Contact',
+    brandAccount: 'Brand account',
+    founderAccount: 'Founder',
+    rights: '© {year} Rifkus concept',
+    notAffiliated: 'Unofficial concept, not affiliated',
+    backToTop: 'Back to top',
+  },
+  placeholder: {
+    comingIn: 'Coming in phase {phase}',
+  },
+  pages: {
+    flavors: { title: 'Flavors', body: 'Six flavors featured here, one crunch.' },
+    flavor: { title: 'Flavor', body: 'The full flavor page arrives in the next phase.' },
+
+    privacy: { title: 'Privacy policy', body: 'This concept site collects nothing. The full text arrives in a later phase.' },
+    terms: { title: 'Terms', body: 'Terms for this concept site arrive in a later phase.' },
+    legal: { title: 'Legal notice', body: 'This is an unofficial concept website. It is not made, endorsed or run by Rifkus.' },
+    notFound: { title: '404', body: 'This bag is empty.', back: 'Back to home' },
+  },
+  meta: {
+    home: {
+      title: 'Rifkus chips | 100% Algerian snack',
+      description:
+        'Rifkus chips: the new Mahajoube (محاجب), Zfiti (زفيطي), Harissa, Pizza, Ketchup and Chicken, six flavors featured here. A 100% Algerian snack.',
+    },
+    flavors: {
+      title: 'Flavors',
+      description: 'Six Rifkus flavors featured here, from the new Mahajoube (محاجب) to Zfiti (زفيطي), with our unofficial heat estimate.',
+    },
+    flavor: { title: 'Flavor', description: 'A Rifkus flavor: heat (estimated), line and where to find it.' },
+    story: {
+      title: 'Our story',
+      description: 'Rifkus is a 100% Algerian snack brand. Rifka launched it in November 2024, after a year of work, as he said in his launch post.',
+    },
+    distributors: {
+      title: 'Become a distributor',
+      description: 'Ways to work with Rifkus, a demo wholesale request form and where to find Rifkus, wilaya by wilaya.',
+    },
+    privacy: { title: 'Privacy policy', description: 'Privacy policy of this unofficial concept website.' },
+    terms: { title: 'Terms', description: 'Terms of use of this unofficial concept website.' },
+    legal: { title: 'Legal notice', description: 'Legal notice: this is an unofficial concept website.' },
+    credits: { title: 'Credits', description: 'Credits and the unofficial-concept notice: fonts, AI-generated backgrounds and the photos used.' },
+    notFound: { title: 'Page not found', description: 'This page does not exist.' },
+  },
+  lines: {
+    potato: 'Potato Chips',
+  },
+  packs: {
+    bag55: '55 g bag',
+  },
+  faq: {
+    officialQ: 'Is this the official Rifkus website?',
+    officialA: 'No. This is an unofficial concept site, made to pitch a new web presence. It is not run or endorsed by Rifkus.',
+    hottestQ: 'Which flavor is the hottest?',
+    hottestA: '{zfiti}. Founder Rifka announced it as a very hot flavor. On this site it scores 5/5 on our heat scale, an unofficial estimate.',
+    newestQ: 'Which flavor is new?',
+    newestA:
+      '{mhadjeb}, the newest bag featured here. Its front reads “the taste of Algerian mhadjeb” in Arabic. The bag marks no heat, so it has no heat score on this site.',
+    buyQ: 'Where can I buy Rifkus?',
+    buyA: 'There is no official list of points of sale yet. We are mapping where to find Rifkus: if you know a shop that sells it, tell us with the request form on this page.',
+    ingredientsQ: 'What are the ingredients and nutrition values?',
+    ingredientsA: '[PLACEHOLDER] Not on this site yet. They will be copied from the packaging once the brand confirms them.',
+    wholesaleQ: 'How do I order wholesale?',
+    wholesaleA: 'Use the request form on this page. On this concept site the form is a demo and sends nothing.',
+  },
+
+  image: {
+    placeholder: '[PLACEHOLDER: image]',
+  },
+  form: {
+    demoNotice: 'Demo form: nothing is sent or stored.',
+    required: '(required)',
+    optional: '(optional)',
+    selectPlaceholder: 'Choose…',
+    errorRequired: 'This field is required.',
+    errorEmail: 'Enter a valid email address.',
+    errorPhone: 'Enter a valid Algerian phone number.',
+    errorMinLength: 'Use at least {min} characters.',
+    errorConsent: 'Please accept to continue.',
+    errorSummary: '{count} field(s) need your attention.',
+    successTitle: 'Thanks!',
+    successBody: 'Demo only: nothing was sent.',
+    reset: 'Start again',
+  },
+  accordion: {
+    fallbackTitle: 'Still have a question?',
+    fallbackBody: 'Ask it in the request form (demo: nothing is sent).',
+    fallbackCta: 'Contact',
+  },
+};
+
+export default en;
