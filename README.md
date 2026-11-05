@@ -142,4 +142,4 @@ The layout and motion language are inspired by **Pitch**, a Framer studio templa
 
 ## Author
 
-**Anevio**: [anevio-dz.com](https://anevio-dz.com)
+**Anevio**: [anevio-dz.com](https://anevio.pro)
